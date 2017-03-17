@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {makeGetFilesForPost} from 'mattermost-redux/selectors/entities/files';
 import {loadFilesForPostIfNecessary} from 'app/actions/views/channel';
 import {getTheme} from 'app/selectors/preferences';
+import {goToImagePreviewModal} from 'app/actions/navigation';
 
 import FileAttachmentList from './file_attachment_list';
 
@@ -24,6 +25,7 @@ function makeMapStateToProps() {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
+            goToImagePreviewModal,
             loadFilesForPostIfNecessary
         }, dispatch)
     };
