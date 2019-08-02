@@ -6,11 +6,13 @@ import {shallow} from 'enzyme';
 
 import Preferences from 'mattermost-redux/constants/preferences';
 
-import ChannelSidebar from './main_sidebar';
+import {DeviceTypes} from 'app/constants';
+
+import MainSidebar from './main_sidebar';
 
 jest.mock('react-intl');
 
-describe('ChannelSidebar', () => {
+describe('MainSidebar', () => {
     const baseProps = {
         actions: {
             getTeams: jest.fn(),
@@ -30,9 +32,30 @@ describe('ChannelSidebar', () => {
 
     test('should match, full snapshot', () => {
         const wrapper = shallow(
-            <ChannelSidebar {...baseProps}/>
+            <MainSidebar {...baseProps}/>
         );
 
         expect(wrapper.getElement()).toMatchSnapshot();
+    });
+
+    test('should not set the permanentSidebar state if not Tablet', () => {
+        const wrapper = shallow(
+            <MainSidebar {...baseProps}/>
+        );
+
+        wrapper.instance().handlePermanentSidebar();
+        expect(wrapper.state('permanentSidebar')).toBeUndefined();
+    });
+
+    test('should set the permanentSidebar state if Tablet', async () => {
+        const wrapper = shallow(
+            <MainSidebar {...baseProps}/>
+        );
+
+        DeviceTypes.IS_TABLET = true;
+
+        await wrapper.instance().handlePermanentSidebar();
+
+        expect(wrapper.state('permanentSidebar')).toBeDefined();
     });
 });
