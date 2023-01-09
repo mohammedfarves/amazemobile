@@ -27,7 +27,7 @@ type Props = {
     /*
      * The user that this component represents.
      */
-    user: UserProfile|string;
+    user: UserProfile;
 
     /*
      * A handler function that will deselect a user when clicked on.
@@ -61,15 +61,15 @@ const getStyleFromTheme = makeStyleSheetFromTheme((theme) => {
             justifyContent: 'center',
             marginLeft: 7,
         },
+        profileContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: 8,
+            color: theme.centerChannelColor,
+        },
         text: {
-            marginLeft: 8,
             color: theme.centerChannelColor,
             ...typography('Body', 100, 'SemiBold'),
-        },
-        picture: {
-            width: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
         },
     };
 });
@@ -84,42 +84,36 @@ export default function SelectedUser({
     const style = getStyleFromTheme(theme);
     const intl = useIntl();
 
-    const isProfile = typeof user !== 'string';
-    const id = isProfile ? user.id : user;
-
     const onPress = useCallback(() => {
-        onRemove(id);
-    }, [onRemove, id]);
+        onRemove(user.id);
+    }, [onRemove, user.id]);
 
-    const userItemTestID = `${testID}.${id}`;
-
+    const userItemTestID = `${testID}.${user.id}`;
     return (
         <Animated.View
             entering={FadeIn.duration(FADE_DURATION)}
             exiting={FadeOut.duration(FADE_DURATION)}
             style={style.container}
-            testID={`${userItemTestID}`}
+            testID={`${testID}.${user.id}`}
         >
-            {isProfile && (
-                <View style={style.picture}>
-                    <ProfilePicture
-                        author={user}
-                        size={20}
-                        iconSize={20}
-                        testID={`${userItemTestID}.profile_picture`}
-                    />
-                </View>
-            )}
+            <View style={style.profileContainer}>
+                <ProfilePicture
+                    author={user}
+                    size={20}
+                    iconSize={20}
+                    testID={`${userItemTestID}.profile_picture`}
+                />
+            </View>
             <Text
                 style={style.text}
-                testID={`${userItemTestID}.display_name`}
+                testID={`${testID}.${user.id}.display_name`}
             >
-                {isProfile ? displayUsername(user, intl.locale, teammateNameDisplay) : id}
+                {displayUsername(user, intl.locale, teammateNameDisplay)}
             </Text>
             <TouchableOpacity
                 style={style.remove}
                 onPress={onPress}
-                testID={`${userItemTestID}.remove.button`}
+                testID={`${testID}.${user.id}.remove.button`}
             >
                 <CompassIcon
                     name='close-circle'
