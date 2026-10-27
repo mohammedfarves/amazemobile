@@ -1,6 +1,6 @@
 {
   "name": "Mattermost",
-  "displayName": "Mattermost",
+  "displayName": "Amaze Connect",
   "expo": {
     "scheme": "mattermost",
     "plugins": [
