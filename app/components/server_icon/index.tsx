@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React, {useMemo} from 'react';
-import {type StyleProp, StyleSheet, type TextStyle, View, type ViewStyle} from 'react-native';
+import {type StyleProp, StyleSheet, type TextStyle, View, type ViewStyle, Image} from 'react-native';
 
 import Badge from '@components/badge';
 import CompassIcon from '@components/compass_icon';
@@ -53,6 +53,12 @@ export default function ServerIcon({
     unreadStyle,
 }: Props) {
     const theme = useTheme();
+    const isDark = Boolean(
+        theme.type === 'indigo' ||
+        theme.type === 'onyx' ||
+        (theme.sidebarBg && parseInt(theme.sidebarBg.replace('#', '').slice(0, 2), 16) < 128)
+    );
+    const iconSource = isDark ? require('@assets/images/icon_dark.png') : require('@assets/images/icon_light.png');
     const hasBadge = Boolean(mentionCount || hasUnreads);
     const count = mentionCount || (hasUnreads ? -1 : 0);
     const memoizedStyle = useMemo(() => {
@@ -68,10 +74,10 @@ export default function ServerIcon({
                 testID={testID}
                 hitSlop={hitSlop}
             >
-                <CompassIcon
-                    size={size}
-                    name='server-variant'
-                    color={iconColor || changeOpacity(theme.sidebarHeaderTextColor, 0.56)}
+                <Image
+                    source={iconSource}
+                    style={{width: size, height: size, borderRadius: 6}}
+                    resizeMode='contain'
                 />
                 <Badge
                     borderColor={badgeBorderColor || theme.sidebarTeamBarBg}

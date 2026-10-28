@@ -2,7 +2,7 @@
     "AuthUrlScheme": "mmauth://",
     "AuthUrlSchemeDev": "mmauthbeta://",
     "DefaultServerUrl": "",
-    "DefaultServerName": "",
+    "DefaultServerName": "Amaze One",
     "TestServerUrl": "http://localhost:8065",
     "AutoSelectServerUrl": false,
 

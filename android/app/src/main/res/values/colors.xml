@@ -2,5 +2,6 @@
 <resources>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="dark_launcher_bg">#01122C</color>
     <color name="splashscreen_bg">#FFFFFF</color>
 </resources>

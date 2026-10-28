@@ -5,7 +5,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {applicationId, nativeApplicationVersion, nativeBuildVersion} from 'expo-application';
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {Text, View} from 'react-native';
+import {Image, Text, View} from 'react-native';
 
 import {getLicenseLoadMetric} from '@actions/remote/license';
 import Config from '@assets/config.json';
@@ -42,6 +42,10 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
         logoContainer: {
             alignItems: 'center',
             marginTop: 20,
+        },
+        logoImage: {
+            width: 200,
+            height: 44,
         },
 
         // Extra inset on tablet around all About content (with SettingContainer's 20 → 40 horizontal total)
@@ -205,14 +209,21 @@ const About = ({config, license}: AboutProps) => {
         [intl, config.BuildNumber, config.Version, config.SQLDriverName, config.SchemaVersion, loadMetric],
     );
 
+    const isDark = Boolean(
+        theme.type === 'indigo' ||
+        theme.type === 'onyx' ||
+        (theme.centerChannelBg && parseInt(theme.centerChannelBg.replace('#', '').slice(0, 2), 16) < 128)
+    );
+    const logoSource = isDark ? require('@assets/images/logo_dark.png') : require('@assets/images/logo_light.png');
+
     return (
         <SettingContainer testID='about'>
             <View style={isTablet ? styles.tabletContentWrapper : undefined}>
                 <View style={styles.logoContainer}>
-                    <CompassIcon
-                        color={theme.centerChannelColor}
-                        name='mattermost'
-                        size={80}
+                    <Image
+                        source={logoSource}
+                        style={styles.logoImage}
+                        resizeMode='contain'
                         testID='about.logo'
                     />
                     <Title
