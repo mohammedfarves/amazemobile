@@ -55,8 +55,8 @@ const useSlidesData = () => {
 
     const slidesData: OnboardingItem[] = [
         {
-            title: intl.formatMessage({id: 'onboarding.welcome', defaultMessage: 'Welcome'}),
-            description: intl.formatMessage({id: 'onboaring.welcome_description', defaultMessage: 'Mattermost is a sovereign collaboration platform built for operational environments and uncompromising security.'}),
+            title: intl.formatMessage({id: 'onboarding.welcome', defaultMessage: 'Welcome to Amaze One'}),
+            description: intl.formatMessage({id: 'onboaring.welcome_description', defaultMessage: 'Amaze One is a sovereign collaboration platform built for operational environments and uncompromising security.'}),
             image: chatSvg,
         },
         {

@@ -2,7 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {View} from 'react-native';
+import {Image, View} from 'react-native';
 
 import FormattedText from '@components/formatted_text';
 import {useIsTablet} from '@hooks/device';
@@ -41,6 +41,12 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => ({
 const ServerHeader = ({additionalServer, theme}: Props) => {
     const isTablet = useIsTablet();
     const styles = getStyleSheet(theme);
+    const isDark = Boolean(
+        theme.type === 'indigo' ||
+        theme.type === 'onyx' ||
+        (theme.centerChannelBg && parseInt(theme.centerChannelBg.replace('#', '').slice(0, 2), 16) < 128)
+    );
+    const logoSource = isDark ? require('@assets/images/logo_dark.png') : require('@assets/images/logo_light.png');
 
     let title;
     if (additionalServer) {
@@ -65,6 +71,13 @@ const ServerHeader = ({additionalServer, theme}: Props) => {
 
     return (
         <View style={styles.textContainer}>
+            <View style={{alignItems: 'center', marginBottom: 16, marginTop: 8}}>
+                <Image
+                    source={logoSource}
+                    style={{width: 220, height: 44}}
+                    resizeMode='contain'
+                />
+            </View>
             {title}
             <FormattedText
                 defaultMessage="A server is your team's communication hub accessed using a unique URL"

@@ -3,7 +3,7 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {Text, useWindowDimensions, View, type LayoutChangeEvent} from 'react-native';
+import {Image, Text, useWindowDimensions, View, type LayoutChangeEvent} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import Animated from 'react-native-reanimated';
 
@@ -55,6 +55,14 @@ const getStyles = makeStyleSheetFromTheme((theme: Theme) => ({
         marginBottom: 12,
         ...typography('Heading', 1000, 'SemiBold'),
     },
+    logoContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    logo: {
+        width: 220,
+        height: 44,
+    },
     innerContainer: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -96,6 +104,12 @@ const LoginOptions = ({
     const intl = useIntl();
 
     const [magicLinkSent, setMagicLinkSent] = useState(false);
+    const isDark = Boolean(
+        theme.type === 'indigo' ||
+        theme.type === 'onyx' ||
+        (theme.centerChannelBg && parseInt(theme.centerChannelBg.replace('#', '').slice(0, 2), 16) < 128)
+    );
+    const logoSource = isDark ? require('@assets/images/logo_dark.png') : require('@assets/images/logo_light.png');
 
     const description = useMemo(() => {
         if (hasLoginForm) {
@@ -208,6 +222,13 @@ const LoginOptions = ({
                         onLayout={onLayout}
                         style={styles.centered}
                     >
+                        <View style={styles.logoContainer}>
+                            <Image
+                                source={logoSource}
+                                style={styles.logo}
+                                resizeMode='contain'
+                            />
+                        </View>
                         {title}
                         {description}
                         {hasLoginForm &&
