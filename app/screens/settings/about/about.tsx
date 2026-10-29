@@ -44,8 +44,10 @@ const getStyleSheet = makeStyleSheetFromTheme((theme) => {
             marginTop: 20,
         },
         logoImage: {
-            width: 200,
-            height: 44,
+
+            // Brand wordmark artwork is 1024x341, including transparent padding
+            width: 220,
+            height: 73,
         },
 
         // Extra inset on tablet around all About content (with SettingContainer's 20 → 40 horizontal total)

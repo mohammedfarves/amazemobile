@@ -45,6 +45,12 @@ const styles = StyleSheet.create({
     },
 });
 
+const SPLASH_FALLBACK_TIMEOUT = 10000;
+
+// Transparent while the index route resolves the first screen, so the launch_screen
+// window background (splash artwork) shows instead of an empty themed screen
+const indexScreenOptions: NativeStackNavigationOptions = {contentStyle: {backgroundColor: 'transparent'}};
+
 // Prevent splash screen from auto-hiding
 SplashScreen.setOptions({fade: true});
 SplashScreen.preventAutoHideAsync();
@@ -94,10 +100,15 @@ export default function RootLayout() {
         };
     });
 
+    // The root index route hides the splash once it has redirected to the first screen
+    // (it renders nothing while resolving it); this is only a safety net.
     useEffect(() => {
-        if (appReady) {
-            SplashScreen.hideAsync();
+        if (!appReady) {
+            return undefined;
         }
+
+        const fallback = setTimeout(() => SplashScreen.hideAsync(), SPLASH_FALLBACK_TIMEOUT);
+        return () => clearTimeout(fallback);
     }, [appReady]);
 
     useEffect(() => {
@@ -203,7 +214,10 @@ export default function RootLayout() {
                                 <Stack screenOptions={stackScreenOptions}>
                                     <Stack.Screen name='(unauthenticated)'/>
                                     <Stack.Screen name='(authenticated)'/>
-                                    <Stack.Screen name='index'/>
+                                    <Stack.Screen
+                                        name='index'
+                                        options={indexScreenOptions}
+                                    />
                                     <Stack.Screen
                                         name='(modals)'
                                         options={modalScreenOptions}

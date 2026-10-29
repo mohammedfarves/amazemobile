@@ -3,10 +3,11 @@
 
 import React, {useCallback, useMemo, useState} from 'react';
 import {useIntl} from 'react-intl';
-import {Image, Text, useWindowDimensions, View, type LayoutChangeEvent} from 'react-native';
+import {Text, useWindowDimensions, View, type LayoutChangeEvent} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import Animated from 'react-native-reanimated';
 
+import BrandHero, {BRAND_ORANGE} from '@components/brand_hero';
 import FormattedText from '@components/formatted_text';
 import {Screens} from '@constants';
 import useAndroidHardwareBackHandler from '@hooks/android_back_handler';
@@ -39,10 +40,31 @@ export interface LoginOptionsProps extends LaunchProps {
 }
 
 const getStyles = makeStyleSheetFromTheme((theme: Theme) => ({
-    centered: {
+    accent: {
+        width: 40,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: BRAND_ORANGE,
+        marginBottom: 16,
+    },
+    card: {
         width: '100%',
         maxWidth: 600,
-        paddingHorizontal: 5,
+        paddingHorizontal: 24,
+        marginTop: -48,
+    },
+    cardSurface: {
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: changeOpacity(theme.centerChannelColor, 0.08),
+        backgroundColor: theme.centerChannelBg,
+        paddingHorizontal: 15,
+        paddingVertical: 8,
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.12,
+        shadowRadius: 16,
+        elevation: 6,
     },
     container: {
         flexGrow: 1,
@@ -51,26 +73,16 @@ const getStyles = makeStyleSheetFromTheme((theme: Theme) => ({
         flex: 1,
     },
     header: {
-        color: theme.centerChannelColor,
+        color: '#FFFFFF',
         marginBottom: 12,
         ...typography('Heading', 1000, 'SemiBold'),
     },
-    logoContainer: {
-        alignItems: 'center',
-        marginBottom: 20,
-    },
-    logo: {
-        width: 220,
-        height: 44,
-    },
     innerContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 24,
+        paddingBottom: 24,
     },
     subheader: {
-        color: changeOpacity(theme.centerChannelColor, 0.6),
-        marginBottom: 12,
+        color: changeOpacity('#FFFFFF', 0.72),
         ...typography('Body', 200, 'Regular'),
     },
     linkSentContainer: {
@@ -104,13 +116,6 @@ const LoginOptions = ({
     const intl = useIntl();
 
     const [magicLinkSent, setMagicLinkSent] = useState(false);
-    const isDark = Boolean(
-        theme.type === 'indigo' ||
-        theme.type === 'onyx' ||
-        (theme.centerChannelBg && parseInt(theme.centerChannelBg.replace('#', '').slice(0, 2), 16) < 128)
-    );
-    const logoSource = isDark ? require('@assets/images/logo_dark.png') : require('@assets/images/logo_light.png');
-
     const description = useMemo(() => {
         if (hasLoginForm) {
             return (
@@ -218,44 +223,42 @@ const LoginOptions = ({
                     style={styles.flex}
                     mode='layout'
                 >
-                    <View
-                        onLayout={onLayout}
-                        style={styles.centered}
-                    >
-                        <View style={styles.logoContainer}>
-                            <Image
-                                source={logoSource}
-                                style={styles.logo}
-                                resizeMode='contain'
-                            />
-                        </View>
+                    <BrandHero testID='login_options.header'>
+                        <View style={styles.accent}/>
                         {title}
                         {description}
-                        {hasLoginForm &&
-                        <Form
-                            config={config}
-                            extra={extra}
-                            isModal={isModal}
-                            license={license}
-                            launchError={launchError}
-                            launchType={launchType}
-                            theme={theme}
-                            serverDisplayName={serverDisplayName}
-                            serverUrl={serverUrl}
-                            setMagicLinkSent={setMagicLinkSent}
-                        />
-                        }
-                        {optionsSeparator}
-                        {numberSSOs > 0 &&
-                        <SsoOptions
-                            goToSso={goToSso}
-                            ssoOnly={!hasLoginForm}
-                            ssoOptions={ssoOptions}
-                            theme={theme}
-                            isIntuneEnabled={IntuneManager.isIntuneEnabledForConfigAndLicense(config, license)}
-                            intuneAuthService={config.IntuneAuthService}
-                        />
-                        }
+                    </BrandHero>
+                    <View
+                        onLayout={onLayout}
+                        style={styles.card}
+                    >
+                        <View style={styles.cardSurface}>
+                            {hasLoginForm &&
+                            <Form
+                                config={config}
+                                extra={extra}
+                                isModal={isModal}
+                                license={license}
+                                launchError={launchError}
+                                launchType={launchType}
+                                theme={theme}
+                                serverDisplayName={serverDisplayName}
+                                serverUrl={serverUrl}
+                                setMagicLinkSent={setMagicLinkSent}
+                            />
+                            }
+                            {optionsSeparator}
+                            {numberSSOs > 0 &&
+                            <SsoOptions
+                                goToSso={goToSso}
+                                ssoOnly={!hasLoginForm}
+                                ssoOptions={ssoOptions}
+                                theme={theme}
+                                isIntuneEnabled={IntuneManager.isIntuneEnabledForConfigAndLicense(config, license)}
+                                intuneAuthService={config.IntuneAuthService}
+                            />
+                            }
+                        </View>
                     </View>
                 </KeyboardAwareScrollView>
             </Animated.View>

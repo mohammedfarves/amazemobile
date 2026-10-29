@@ -1,0 +1,13 @@
+<resources>
+
+    <!-- Android 12+: the system splash shows the Amaze One icon and wordmark until the
+         first frame, then the launch_screen window background (same artwork) takes over -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:windowSplashScreenBackground">@color/splashscreen_bg</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splashscreen_logo</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/splashscreen_branding</item>
+    </style>
+
+</resources>

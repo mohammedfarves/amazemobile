@@ -8,6 +8,7 @@ import {defineMessages, useIntl} from 'react-intl';
 import {Keyboard, TextInput, TouchableOpacity, View} from 'react-native';
 
 import {getUserLoginType, login} from '@actions/remote/session';
+import {BRAND_ORANGE} from '@components/brand_hero';
 import Button from '@components/button';
 import CompassIcon from '@components/compass_icon';
 import FloatingTextInput from '@components/floating_input/floating_text_input_label';
@@ -72,6 +73,9 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => ({
         color: theme.buttonBg,
         fontSize: 14,
         fontFamily: 'OpenSans-SemiBold',
+    },
+    loginButton: {
+        backgroundColor: BRAND_ORANGE,
     },
     loginButtonContainer: {
         marginTop: 20,
@@ -328,6 +332,7 @@ const LoginForm = ({
     const proceedButton = (
         <View style={styles.loginButtonContainer}>
             <Button
+                backgroundStyle={buttonDisabled ? undefined : styles.loginButton}
                 disabled={buttonDisabled}
                 onPress={onLogin}
                 size='lg'
