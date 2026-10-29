@@ -2,8 +2,9 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
-import {Image, View} from 'react-native';
+import {View} from 'react-native';
 
+import BrandHero, {BRAND_ORANGE} from '@components/brand_hero';
 import FormattedText from '@components/formatted_text';
 import {useIsTablet} from '@hooks/device';
 import {changeOpacity, makeStyleSheetFromTheme} from '@utils/theme';
@@ -14,39 +15,34 @@ type Props = {
     theme: Theme;
 };
 
-const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => ({
-    textContainer: {
-        marginBottom: 32,
-        maxWidth: 600,
-        width: '100%',
-        paddingHorizontal: 24,
+const getStyleSheet = makeStyleSheetFromTheme(() => ({
+    accent: {
+        width: 40,
+        height: 4,
+        borderRadius: 2,
+        backgroundColor: BRAND_ORANGE,
+        marginBottom: 16,
     },
     connect: {
         letterSpacing: -1,
-        color: theme.centerChannelColor,
-        marginTop: 12,
-        marginBottom: 12,
-        ...typography('Heading', 1000, 'SemiBold'),
-        lineHeight: 48,
+        color: '#FFFFFF',
+        marginBottom: 10,
+        ...typography('Heading', 900, 'SemiBold'),
+        lineHeight: 42,
     },
     connectTablet: {
         width: undefined,
     },
     description: {
-        color: changeOpacity(theme.centerChannelColor, 0.64),
+        color: changeOpacity('#FFFFFF', 0.72),
         ...typography('Body', 200, 'Regular'),
+        lineHeight: 24,
     },
 }));
 
 const ServerHeader = ({additionalServer, theme}: Props) => {
     const isTablet = useIsTablet();
     const styles = getStyleSheet(theme);
-    const isDark = Boolean(
-        theme.type === 'indigo' ||
-        theme.type === 'onyx' ||
-        (theme.centerChannelBg && parseInt(theme.centerChannelBg.replace('#', '').slice(0, 2), 16) < 128)
-    );
-    const logoSource = isDark ? require('@assets/images/logo_dark.png') : require('@assets/images/logo_light.png');
 
     let title;
     if (additionalServer) {
@@ -70,14 +66,8 @@ const ServerHeader = ({additionalServer, theme}: Props) => {
     }
 
     return (
-        <View style={styles.textContainer}>
-            <View style={{alignItems: 'center', marginBottom: 16, marginTop: 8}}>
-                <Image
-                    source={logoSource}
-                    style={{width: 220, height: 44}}
-                    resizeMode='contain'
-                />
-            </View>
+        <BrandHero testID='server_header'>
+            <View style={styles.accent}/>
             {title}
             <FormattedText
                 defaultMessage="A server is your team's communication hub accessed using a unique URL"
@@ -85,7 +75,7 @@ const ServerHeader = ({additionalServer, theme}: Props) => {
                 style={styles.description}
                 testID='server_header.description'
             />
-        </View>
+        </BrandHero>
     );
 };
 

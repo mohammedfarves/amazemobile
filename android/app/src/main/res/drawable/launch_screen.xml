@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Matches the Android 12+ system splash so the hand-off from it is seamless -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splashscreen_bg"/>
-    <item android:gravity="center|fill_vertical">
-        <bitmap
-            android:src="@drawable/splash_background"
-            android:tileMode="disabled" />
-    </item>
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/splash"/>
+            android:src="@drawable/splashscreen_logo"/>
+    </item>
+    <item android:bottom="60dp">
+        <bitmap
+            android:gravity="bottom|center_horizontal"
+            android:src="@drawable/splashscreen_branding"/>
     </item>
 </layer-list>

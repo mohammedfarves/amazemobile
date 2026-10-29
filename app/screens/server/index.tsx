@@ -64,7 +64,7 @@ const getStyleSheet = makeStyleSheetFromTheme((theme: Theme) => ({
     scrollContainer: {
         alignItems: 'center',
         flexGrow: 1,
-        justifyContent: 'center',
+        paddingBottom: 24,
     },
 }));
 
